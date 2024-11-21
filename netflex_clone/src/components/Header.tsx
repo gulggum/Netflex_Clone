@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 const Nav = styled.nav`
   display: flex;
@@ -16,10 +18,12 @@ const Column = styled.div`
     gap: 20px;
   }
 `;
-const Logo = styled.div`
+const Logo = styled(motion.div)`
   font-size: 30px;
+  font-weight: 600;
   color: ${(props) => props.theme.red};
   text-transform: uppercase;
+  cursor: pointer;
 `;
 const Menus = styled.ul`
   display: flex;
@@ -27,24 +31,55 @@ const Menus = styled.ul`
 `;
 const Menu = styled.li`
   padding: 8px 15px;
+  cursor: pointer;
+`;
+
+const Dot = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: red;
 `;
 const SearchBtn = styled.svg`
   width: 25px;
   fill: ${(props) => props.theme.white.lighter};
+  cursor: pointer;
 `;
 
 const Avatar = styled.img`
   width: 33px;
   border-radius: 10px;
+  cursor: pointer;
 `;
+
+const logoVariant = {
+  start: { color: " #E51013" },
+  middle: { color: "#fff" },
+  active: {
+    color: "#E51013",
+
+    transition: {
+      repeat: Infinity,
+    },
+  },
+};
 
 function Header() {
   return (
     <Nav>
       <Column>
-        <Logo>netflex</Logo>
+        <Logo
+          variants={logoVariant}
+          initial="start"
+          animate="middle"
+          whileHover="active"
+        >
+          netflex
+        </Logo>
         <Menus>
-          <Menu>홈</Menu>
+          <Menu>
+            홈<Dot></Dot>
+          </Menu>
           <Menu>시리즈</Menu>
           <Menu>영화</Menu>
           <Menu>NEW!요즘 대세 콘텐츠</Menu>
