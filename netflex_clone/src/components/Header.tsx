@@ -38,7 +38,7 @@ const Menu = styled.li`
   align-items: center;
 `;
 
-const Dot = styled.div`
+const Dot = styled(motion.div)`
   width: 5px;
   height: 5px;
   border-radius: 2.5px;
@@ -92,27 +92,27 @@ function Header() {
         <Menus>
           <Menu>
             <Link to={"/"}>홈</Link>
-            {homeMatch && <Dot />}
+            {homeMatch && <Dot layoutId="hey" />}
           </Menu>
           <Menu>
             <Link to={"/series"}>시리즈</Link>
-            {seriesMatch && <Dot />}
+            {seriesMatch && <Dot layoutId="hey" />}
           </Menu>
           <Menu>
             <Link to={"/movie"}>영화</Link>
-            {movieMatch && <Dot />}
+            {movieMatch && <Dot layoutId="hey" />}
           </Menu>
           <Menu>
             <Link to={"/hotContents"}>NEW!요즘 대세 콘텐츠</Link>
-            {hotContentsMatch && <Dot />}
+            {hotContentsMatch && <Dot layoutId="hey" />}
           </Menu>
           <Menu>
             <Link to={"/myLike"}>내가 찜한 리스트</Link>
-            {myLikeMatch && <Dot />}
+            {myLikeMatch && <Dot layoutId="hey" />}
           </Menu>
           <Menu>
             <Link to={"/lang"}>언어별로 찾아보기</Link>
-            {langMatch && <Dot />}
+            {langMatch && <Dot layoutId="hey" />}
           </Menu>
         </Menus>
       </Column>
