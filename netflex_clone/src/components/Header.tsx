@@ -17,6 +17,7 @@ const Column = styled.div`
   display: flex;
   &:last-child {
     gap: 20px;
+    position: relative;
   }
 `;
 const Logo = styled(motion.div)`
@@ -45,13 +46,24 @@ const Dot = styled(motion.div)`
   background-color: ${(props) => props.theme.red};
   margin-top: 10px;
 `;
-const SearchBtn = styled.svg`
+
+const Search = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const SearchBtn = styled(motion.svg)`
   width: 25px;
   fill: ${(props) => props.theme.white.lighter};
   cursor: pointer;
 `;
 
-const SearchInput = styled.input``;
+const SearchInput = styled(motion.input)`
+  transform-origin: right center;
+  background: none;
+  border: 1px solid ${(props) => props.theme.white.lighter};
+  padding: 8px;
+  margin-left: 5px;
+`;
 
 const Avatar = styled.img`
   width: 33px;
@@ -70,6 +82,7 @@ const logoVariant = {
     },
   },
 };
+
 function Header() {
   //헤더에 검색버튼 클릭시 input 열기구현
   const [searchBox, setSearchBox] = useState(false);
@@ -124,14 +137,18 @@ function Header() {
         </Menus>
       </Column>
       <Column>
-        {searchBox ? <SearchInput></SearchInput> : null}
-        <SearchBtn
-          onClick={onClick}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-        >
-          <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-        </SearchBtn>
+        <Search>
+          <SearchBtn
+            onClick={onClick}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+          </SearchBtn>
+          {searchBox ? (
+            <SearchInput placeholder="제목,사람,장르"></SearchInput>
+          ) : null}
+        </Search>
         <Avatar src="https://d1telmomo28umc.cloudfront.net/media/public/avatars/lhyto1234-1718000814.jpg"></Avatar>
       </Column>
     </Nav>
