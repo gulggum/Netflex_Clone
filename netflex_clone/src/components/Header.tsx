@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Link, useMatch } from "react-router-dom";
 
 const Nav = styled.nav`
   display: flex;
@@ -8,7 +9,7 @@ const Nav = styled.nav`
   align-items: center;
   background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.lighter};
-  padding: 18px 80px;
+  padding: 15px 80px;
   position: fixed;
   width: 100%;
 `;
@@ -32,13 +33,17 @@ const Menus = styled.ul`
 const Menu = styled.li`
   padding: 8px 15px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Dot = styled.div`
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: red;
+  width: 5px;
+  height: 5px;
+  border-radius: 2.5px;
+  background-color: ${(props) => props.theme.red};
+  margin-top: 10px;
 `;
 const SearchBtn = styled.svg`
   width: 25px;
@@ -65,6 +70,14 @@ const logoVariant = {
 };
 
 function Header() {
+  //메뉴버튼 클릭시 Dot으로 표기 => useMatch 사용
+  const homeMatch = useMatch("/");
+  const seriesMatch = useMatch("series");
+  const movieMatch = useMatch("movie");
+  const hotContentsMatch = useMatch("hotContents");
+  const myLikeMatch = useMatch("myLike");
+  const langMatch = useMatch("lang");
+
   return (
     <Nav>
       <Column>
@@ -78,13 +91,29 @@ function Header() {
         </Logo>
         <Menus>
           <Menu>
-            홈<Dot></Dot>
+            <Link to={"/"}>홈</Link>
+            {homeMatch && <Dot />}
           </Menu>
-          <Menu>시리즈</Menu>
-          <Menu>영화</Menu>
-          <Menu>NEW!요즘 대세 콘텐츠</Menu>
-          <Menu>내가 찜한 리스트</Menu>
-          <Menu>언어별로 찾아보기</Menu>
+          <Menu>
+            <Link to={"/series"}>시리즈</Link>
+            {seriesMatch && <Dot />}
+          </Menu>
+          <Menu>
+            <Link to={"/movie"}>영화</Link>
+            {movieMatch && <Dot />}
+          </Menu>
+          <Menu>
+            <Link to={"/hotContents"}>NEW!요즘 대세 콘텐츠</Link>
+            {hotContentsMatch && <Dot />}
+          </Menu>
+          <Menu>
+            <Link to={"/myLike"}>내가 찜한 리스트</Link>
+            {myLikeMatch && <Dot />}
+          </Menu>
+          <Menu>
+            <Link to={"/lang"}>언어별로 찾아보기</Link>
+            {langMatch && <Dot />}
+          </Menu>
         </Menus>
       </Column>
       <Column>
