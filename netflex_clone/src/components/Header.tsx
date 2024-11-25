@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useState } from "react";
 import { Link, useMatch } from "react-router-dom";
 
-const Nav = styled.nav`
+const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.lighter};
   padding: 15px 80px;
   position: fixed;
@@ -72,18 +71,26 @@ const Avatar = styled.img`
 `;
 
 const logoVariant = {
-  start: { color: " #E51013" },
-  middle: { color: "#fff" },
+  start: {
+    color: " #E51013",
+  },
   active: {
-    color: "#E51013",
-
+    color: "#fff",
     transition: {
       repeat: Infinity,
+      duration: 1,
     },
   },
 };
 
 function Header() {
+  const { scrollYProgress } = useScroll();
+  const headerOpacity = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["rgba(0,0,0,0)", "rgba(0,0,0,1)"]
+  );
+
   //헤더에 검색버튼 클릭시 input 열기구현
   const [searchBox, setSearchBox] = useState(false);
   const onClick = () => {
@@ -99,14 +106,9 @@ function Header() {
   const langMatch = useMatch("lang");
 
   return (
-    <Nav>
+    <Nav style={{ backgroundColor: headerOpacity }}>
       <Column>
-        <Logo
-          variants={logoVariant}
-          initial="start"
-          animate="middle"
-          whileHover="active"
-        >
+        <Logo variants={logoVariant} initial="start" whileHover="active">
           netflex
         </Logo>
         <Menus>

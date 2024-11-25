@@ -57,8 +57,12 @@ table {
 }
 
 body{
+  width: 100%;
   font-family:'Source Sans Pro', sans-serif;
   font-size: 14px;
+  background-color: white;
+  height: 120vh;
+
 }
 a{
   text-decoration: none;
