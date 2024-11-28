@@ -61,8 +61,9 @@ body{
   width: 100%;
   font-family:'Source Sans Pro', sans-serif;
   font-size: 14px;
-  background-color: white;
+  background-color: black;
   height: 120vh;
+  color: ${(props) => props.theme.white.lighter};
 
 }
 a{
