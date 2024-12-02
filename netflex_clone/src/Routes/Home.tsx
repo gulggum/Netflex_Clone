@@ -2,7 +2,7 @@ import { fetchMovies, IGetMoviesResult } from "../api";
 import { useQuery } from "react-query";
 import { MakeImagePath } from "../utils";
 import styled from "styled-components";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, delay, motion } from "framer-motion";
 import { useState } from "react";
 
 const Wrapper = styled.div``;
@@ -67,6 +67,12 @@ const SlideBox = styled(motion.div)<{ bgImage: string }>`
   font-size: 18px;
   font-weight: 600;
   color: ${(props) => props.theme.white.lighter};
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
 const sliderVariant = {
@@ -77,6 +83,18 @@ const sliderVariant = {
   exit: (back: Boolean) => ({
     x: back ? window.outerWidth : -window.outerWidth,
   }),
+};
+
+const slideBoxVariants = {
+  basic: { scale: 1 },
+  hover: {
+    scale: 1.5,
+    cursor: "pointer",
+    y: -100,
+    transition: {
+      type: "between",
+    },
+  },
 };
 
 const offset = 6;
@@ -139,6 +157,9 @@ function Home() {
                     <SlideBox
                       bgImage={MakeImagePath(movie?.backdrop_path)}
                       key={movie.id}
+                      variants={slideBoxVariants}
+                      initial="basic"
+                      whileHover="hover"
                     >
                       {movie.title}
                     </SlideBox>
