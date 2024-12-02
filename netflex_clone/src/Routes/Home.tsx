@@ -54,6 +54,7 @@ const SlideWrapper = styled(motion.div)`
   position: absolute;
 `;
 const SlideBox = styled(motion.div)<{ bgImage: string }>`
+  cursor: pointer;
   width: 300px;
   height: 180px;
   background-color: white;
@@ -75,6 +76,17 @@ const SlideBox = styled(motion.div)<{ bgImage: string }>`
   }
 `;
 
+const Info = styled(motion.div)`
+  background-color: ${(props) => props.theme.black.darker};
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  height: 100px;
+  font-size: 10px;
+`;
+
 const sliderVariant = {
   start: (back: boolean) => ({
     x: back ? -window.outerWidth : window.outerWidth,
@@ -89,10 +101,25 @@ const slideBoxVariants = {
   basic: { scale: 1 },
   hover: {
     scale: 1.5,
-    cursor: "pointer",
     y: -100,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
     transition: {
-      type: "between",
+      type: "tween",
+      delay: 0.8,
+    },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    transition: {
+      type: "tween",
+      delay: 0.8,
+      pointerEvents: "auto",
     },
   },
 };
@@ -160,8 +187,15 @@ function Home() {
                       variants={slideBoxVariants}
                       initial="basic"
                       whileHover="hover"
+                      transition={{ type: "tween" }}
                     >
                       {movie.title}
+
+                      <Info variants={infoVariants}>
+                        <h4>
+                          {movie.title}({movie.release_date})
+                        </h4>
+                      </Info>
                     </SlideBox>
                   ))}
               </SlideWrapper>
