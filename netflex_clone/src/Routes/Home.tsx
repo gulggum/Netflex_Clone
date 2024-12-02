@@ -2,8 +2,9 @@ import { fetchMovies, IGetMoviesResult } from "../api";
 import { useQuery } from "react-query";
 import { MakeImagePath } from "../utils";
 import styled from "styled-components";
-import { AnimatePresence, delay, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div``;
 const Banner = styled.div<{ bgImage: string }>`
@@ -131,6 +132,10 @@ function Home() {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const navigate = useNavigate();
+  const onClickedMatch = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+  };
 
   const onSliderPrev = () => {
     if (data) {
@@ -188,6 +193,7 @@ function Home() {
                       initial="basic"
                       whileHover="hover"
                       transition={{ type: "tween" }}
+                      onClick={() => onClickedMatch(movie.id)}
                     >
                       {movie.title}
 
