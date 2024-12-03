@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useMatch } from "react-router-dom";
+import { url } from "inspector";
 
 const Wrapper = styled.div``;
 const Banner = styled.div<{ bgImage: string }>`
@@ -90,12 +91,13 @@ const Info = styled(motion.div)`
 
 const ModalBox = styled(motion.div)`
   width: 40vw;
-  height: 50vh;
-  background-color: tomato;
+  height: 90vh;
+  background-color: ${(props) => props.theme.black.darker};
   position: fixed;
-  top: 30%;
-  left: 35%;
+  top: 10%;
+  left: 30%;
   z-index: 2;
+  border-radius: 5px;
   button {
     width: 40px;
     height: 40px;
@@ -115,6 +117,31 @@ const ModalBox = styled(motion.div)`
       fill: ${(props) => props.theme.white.lighter};
     }
   }
+`;
+
+const ModalImage = styled.div<{ modalImg: string }>`
+  width: 100%;
+  height: 400px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-image: linear-gradient(to top, black, transparent),
+    url(${(props) => props.modalImg});
+
+  background-position: center enter;
+  background-size: cover;
+`;
+
+const ModalInfo = styled.div`
+  padding: 0px 40px;
+`;
+const ModalTitle = styled.h3`
+  font-size: 50px;
+  position: relative;
+  top: -60px;
+`;
+const ModalOverview = styled.p`
+  font-size: 20px;
+  line-height: 30px;
 `;
 
 const ModalBg = styled(motion.div)`
@@ -170,17 +197,27 @@ function Home() {
   const [index, setIndex] = useState(0);
   const [back, setBack] = useState(false);
   const [leaving, setLeaving] = useState(false);
+
+  //url과 일치여부 확인
   const navigate = useNavigate();
   const onClickedMatch = (movieId: number) => {
     navigate(`/movies/${movieId}`);
   };
-  const bigMovieMatch = useMatch("/movies/:movieId");
-  console.log(bigMovieMatch);
+  const modalMovieMatch = useMatch("/movies/:movieId");
+  console.log(modalMovieMatch);
 
   //modal창 닫기-> home으로 되돌리기
   const onOutModal = () => {
     navigate("/");
   };
+
+  //클릭한 영화찾기 true && true
+  const clickedMovie =
+    modalMovieMatch?.params.movieId &&
+    data?.results.find(
+      (movie) => movie.id + "" === modalMovieMatch.params.movieId
+    );
+  console.log(clickedMovie);
 
   const onSliderPrev = () => {
     if (data) {
@@ -255,9 +292,9 @@ function Home() {
             </Slider>
           </AnimatePresence>
           <AnimatePresence>
-            {bigMovieMatch ? (
+            {modalMovieMatch ? (
               <>
-                <ModalBox layoutId={bigMovieMatch.params.movieId}>
+                <ModalBox layoutId={modalMovieMatch.params.movieId}>
                   <button>
                     <svg
                       onClick={onOutModal}
@@ -267,6 +304,20 @@ function Home() {
                       <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
                     </svg>
                   </button>
+                  {clickedMovie && (
+                    <>
+                      <ModalImage
+                        modalImg={MakeImagePath(
+                          clickedMovie.backdrop_path,
+                          "w500"
+                        )}
+                      ></ModalImage>
+                      <ModalInfo>
+                        <ModalTitle>{clickedMovie.title}</ModalTitle>
+                        <ModalOverview>{clickedMovie.overview}</ModalOverview>
+                      </ModalInfo>
+                    </>
+                  )}
                 </ModalBox>
                 <ModalBg onClick={onOutModal}></ModalBg>
               </>
