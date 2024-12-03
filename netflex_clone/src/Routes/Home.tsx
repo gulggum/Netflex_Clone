@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useMatch } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.div``;
 const Banner = styled.div<{ bgImage: string }>`
@@ -93,8 +92,8 @@ const ModalBox = styled(motion.div)`
   width: 40vw;
   height: 50vh;
   background-color: tomato;
-  position: absolute;
-  top: 40%;
+  position: fixed;
+  top: 30%;
   left: 35%;
   z-index: 2;
   button {
@@ -119,10 +118,10 @@ const ModalBox = styled(motion.div)`
 `;
 
 const ModalBg = styled(motion.div)`
+  position: absolute;
   width: 100%;
-  height: 100%;
+  height: 130vh;
   background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
   top: 0;
 `;
 
