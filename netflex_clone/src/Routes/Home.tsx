@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useMatch } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.div``;
 const Banner = styled.div<{ bgImage: string }>`
@@ -93,9 +94,36 @@ const ModalBox = styled(motion.div)`
   height: 50vh;
   background-color: tomato;
   position: absolute;
-
   top: 40%;
   left: 35%;
+  z-index: 2;
+  button {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    background: none;
+    border-radius: 20px;
+    border: 1px solid ${(props) => props.theme.white.lighter};
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+    svg {
+      width: 15px;
+      fill: ${(props) => props.theme.white.lighter};
+    }
+  }
+`;
+
+const ModalBg = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
 `;
 
 //애니메이션 variant
@@ -149,6 +177,11 @@ function Home() {
   };
   const bigMovieMatch = useMatch("/movies/:movieId");
   console.log(bigMovieMatch);
+
+  //modal창 닫기-> home으로 되돌리기
+  const onOutModal = () => {
+    navigate("/");
+  };
 
   const onSliderPrev = () => {
     if (data) {
@@ -224,7 +257,20 @@ function Home() {
           </AnimatePresence>
           <AnimatePresence>
             {bigMovieMatch ? (
-              <ModalBox layoutId={bigMovieMatch.params.movieId}></ModalBox>
+              <>
+                <ModalBox layoutId={bigMovieMatch.params.movieId}>
+                  <button>
+                    <svg
+                      onClick={onOutModal}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 384 512"
+                    >
+                      <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+                    </svg>
+                  </button>
+                </ModalBox>
+                <ModalBg onClick={onOutModal}></ModalBg>
+              </>
             ) : null}
           </AnimatePresence>
         </>
