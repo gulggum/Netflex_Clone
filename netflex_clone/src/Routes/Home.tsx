@@ -4,7 +4,7 @@ import { MakeImagePath } from "../utils";
 import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useMatch } from "react-router-dom";
 
 const Wrapper = styled.div``;
 const Banner = styled.div<{ bgImage: string }>`
@@ -88,6 +88,17 @@ const Info = styled(motion.div)`
   font-size: 10px;
 `;
 
+const ModalBox = styled(motion.div)`
+  width: 40vw;
+  height: 50vh;
+  background-color: tomato;
+  position: absolute;
+
+  top: 40%;
+  left: 35%;
+`;
+
+//애니메이션 variant
 const sliderVariant = {
   start: (back: boolean) => ({
     x: back ? -window.outerWidth : window.outerWidth,
@@ -136,6 +147,8 @@ function Home() {
   const onClickedMatch = (movieId: number) => {
     navigate(`/movies/${movieId}`);
   };
+  const bigMovieMatch = useMatch("/movies/:movieId");
+  console.log(bigMovieMatch);
 
   const onSliderPrev = () => {
     if (data) {
@@ -187,6 +200,7 @@ function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <SlideBox
+                      layoutId={movie.id + ""}
                       bgImage={MakeImagePath(movie?.backdrop_path)}
                       key={movie.id}
                       variants={slideBoxVariants}
@@ -207,6 +221,11 @@ function Home() {
               </SlideWrapper>
               <button onClick={onSliderNext}>Next</button>
             </Slider>
+          </AnimatePresence>
+          <AnimatePresence>
+            {bigMovieMatch ? (
+              <ModalBox layoutId={bigMovieMatch.params.movieId}></ModalBox>
+            ) : null}
           </AnimatePresence>
         </>
       )}
